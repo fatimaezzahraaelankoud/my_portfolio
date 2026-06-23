@@ -1,5 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import emailjs from "@emailjs/browser";
+import codeAlphaLogo from "./logos/codealpha.png";
+import byteBrigadeLogo from "./logos/bytebrigade.png";
+import maazizLogo from "./logos/maaziz.png";
+
 import {
   Github,
   Linkedin,
@@ -44,7 +48,7 @@ const EXPERIENCES = [
     period: "June 2026 – Present",
     desc: "Developing web applications using modern frameworks and industry best practices.",
     current: true,
-    initials: "CA",
+    logo: codeAlphaLogo,
     color: "#7c6af7",
     bg: "rgba(124,106,247,0.12)",
   },
@@ -54,7 +58,7 @@ const EXPERIENCES = [
     period: "Oct 2025 – June 2026",
     desc: "Managed digital content and team coordination. Collaborated on design and collaborative projects.",
     current: false,
-    initials: "BB",
+    logo: byteBrigadeLogo,
     color: "#06d6a0",
     bg: "rgba(6,214,160,0.12)",
   },
@@ -64,7 +68,7 @@ const EXPERIENCES = [
     period: "July – August 2025",
     desc: "Designed and developed a full stack digital newspaper platform (FastAPI + React.js + Ionic). Led a critical database migration from MongoDB to PostgreSQL. Built Figma mockups and managed version control in an Agile team.",
     current: false,
-    initials: "MI",
+    logo: maazizLogo,
     color: "#38bdf8",
     bg: "rgba(56,189,248,0.12)",
   },
@@ -451,15 +455,17 @@ function Experience() {
             <div key={i} className="relative pl-20 pb-12 last:pb-0">
               {/* Company logo badge */}
               <div
-                className="absolute left-0 top-0 w-12 h-12 rounded-xl flex items-center justify-center text-sm font-bold border border-border"
-                style={{
-                  background: exp.bg,
-                  color: exp.color,
-                  fontFamily: "'Playfair Display', serif",
-                }}
-              >
-                {exp.initials}
-              </div>
+               className="w-14 h-14 rounded-xl flex items-center justify-center overflow-hidden"
+               style={{
+             background: exp.bg,
+                  }}
+                 >
+             <img
+         src={exp.logo}
+         alt={exp.company}
+         className="w-10 h-10 object-contain"
+        />
+</div>
               {/* Timeline dot */}
               <div
                 className={`absolute left-[18.5px] top-4 w-3 h-3 rounded-full border-2 ${
