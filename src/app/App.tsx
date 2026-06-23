@@ -3,7 +3,8 @@ import emailjs from "@emailjs/browser";
 import codeAlphaLogo from "./logos/codealpha.png";
 import byteBrigadeLogo from "./logos/bytebrigade.png";
 import maazizLogo from "./logos/maaziz.png";
-
+import sql from "./logos/sql.jpeg";
+import reactcertificate from "./logos/react.jpeg";
 import {
   Github,
   Linkedin,
@@ -135,9 +136,9 @@ const EDUCATION = [
   },
 ];
 
-const INITIAL_CERTS = [
-  { label: "HackerRank — SQL: Basic, Intermediate, Advanced", image: null as string | null },
-  { label: "Udemy — React.js: Modern Frontend Development", image: null as string | null },
+const CERTIFICATIONS = [
+  { label: "HackerRank — SQL: Basic, Intermediate, Advanced", image: sql },
+  { label: "Udemy — React.js: Modern Frontend Development", image: reactcertificate },
 ];
 
 /* ─── Hooks ─────────────────────────────────────────── */
@@ -591,77 +592,12 @@ function Projects() {
 
 /* ─── Certificate image slot ────────────────────────── */
 
-function CertSlot({
-  label,
-  image,
-  onChange,
-}: {
-  label: string;
-  image: string | null;
-  onChange: (url: string) => void;
-}) {
-  const ref = useRef<HTMLInputElement>(null);
 
-  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      if (ev.target?.result) onChange(ev.target.result as string);
-    };
-    reader.readAsDataURL(file);
-  };
-
-  return (
-    <div className="bg-card border border-border rounded overflow-hidden hover:border-primary/40 transition-colors group">
-      {image ? (
-        <div className="relative">
-          <img
-            src={image}
-            alt={label}
-            className="w-full object-contain max-h-48 bg-muted"
-          />
-          <button
-            onClick={() => ref.current?.click()}
-            className="absolute inset-0 bg-foreground/0 hover:bg-foreground/10 transition-colors flex items-center justify-center opacity-0 hover:opacity-100"
-          >
-            <span className="bg-background/90 text-foreground text-xs px-3 py-1.5 rounded flex items-center gap-1.5">
-              <Upload size={12} /> Change
-            </span>
-          </button>
-        </div>
-      ) : (
-        <button
-          onClick={() => ref.current?.click()}
-          className="w-full h-32 flex flex-col items-center justify-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-        >
-          <ImagePlus size={22} />
-          <span className="text-xs" style={{ fontFamily: "'Lato', sans-serif" }}>
-            Click to upload certificate
-          </span>
-        </button>
-      )}
-      <input ref={ref} type="file" accept="image/*" className="hidden" onChange={handleFile} />
-      <div className="px-4 py-3 border-t border-border">
-        <div className="flex items-center gap-2">
-          <div className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
-          <p className="text-sm text-foreground" style={{ fontFamily: "'Lato', sans-serif" }}>
-            {label}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 /* ─── Education ─────────────────────────────────────── */
 
 function Education() {
-  const [certs, setCerts] = useState(INITIAL_CERTS);
-
-  const updateCertImage = (i: number, url: string) => {
-    setCerts((prev) => prev.map((c, idx) => (idx === i ? { ...c, image: url } : c)));
-  };
+  
 
   return (
     <Section id="Education" label="05 / Education" title="Academic Background">
@@ -738,14 +674,25 @@ function Education() {
             Certifications
           </h3>
           <div className="flex flex-col gap-4">
-            {certs.map((c, i) => (
-              <CertSlot
-                key={i}
-                label={c.label}
-                image={c.image}
-                onChange={(url) => updateCertImage(i, url)}
-              />
-            ))}
+            {CERTIFICATIONS.map((c, i) => (
+  <div
+    key={i}
+    className="bg-card border border-border rounded p-5 hover:border-primary/40 transition-colors"
+  >
+    <img
+      src={c.image}
+      alt={c.label}
+      className="w-full h-48 object-contain rounded mb-4"
+    />
+
+    <h4
+      className="text-sm font-medium text-foreground"
+      style={{ fontFamily: "'Playfair Display', serif" }}
+    >
+      {c.label}
+    </h4>
+  </div>
+))}
           </div>
         </div>
       </div>
