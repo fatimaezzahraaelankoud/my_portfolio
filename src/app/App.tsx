@@ -5,6 +5,7 @@ import byteBrigadeLogo from "./logos/bytebrigade.png";
 import maazizLogo from "./logos/maaziz.png";
 import sql from "./logos/sql.jpeg";
 import reactcertificate from "./logos/react.jpeg";
+import ocpLogo from "./logos/ocplogo.png";
 import {
   Github,
   Linkedin,
@@ -35,23 +36,33 @@ import {
 const NAV_LINKS = ["About", "Skills", "Experience", "Projects", "Education", "Contact"];
 
 const SKILLS = {
-  "Backend & APIs": ["Java", "Spring Boot", "Spring MVC", "Spring Data JPA", "FastAPI", "REST API", "PHP"],
+  "Backend & APIs": ["Java", "Spring Boot", "Spring MVC", "Spring Data JPA","Spring Security","Microservices" , "Python", "FastAPI", "REST API"],
   Frontend: ["React.js", "Vue.js", "JavaScript ES6+", "HTML5", "CSS3", "Ionic Framework"],
   Databases: ["PostgreSQL", "MySQL", "MongoDB"],
-  "DevOps & Tools": ["Docker", "Git", "GitHub", "GitLab", "Postman", "CI/CD", "Figma", "n8n"],
+  "DevOps & Tools": ["Docker", "Git", "GitHub","GitHub actions", "GitLab", "Postman", "Figma", "n8n"],
   Methodologies: ["Agile", "Scrum", "UML", "UX/UI Design"],
 };
 
 const EXPERIENCES = [
   {
+    role: "Full Stack Developer Intern",
+    company: "OCP group - IT department",
+    period: "6 july 2026 – 4 September 2026",
+    desc: "Developed a full-stack internal collaborative platform using React/TypeScript and Spring Boot microservices. Implemented JWT authentication, role-based access control, user/permission management, project management and Kanban task tracking. Integrated REST APIs through Spring Cloud Gateway, with PostgreSQL persistence and Docker/GitHub Actions for containerization and CI/CD React · TypeScript · Java · Spring Boot · Spring Security · JWT · PostgreSQL · Spring Cloud Gateway · Docker · GitHub Actions",
+    current: false,
+    logo: ocpLogo,
+    color: "#12f024",
+    bg: "rgba(12, 107, 50, 0.12)",
+  },
+  {
     role: "Web Developer — Virtual Internship",
     company: "CodeAlpha",
-    period: "June 2026 – Present",
+    period: "June 2026 – august 2026",
     desc: "Developing web applications using modern frameworks and industry best practices.",
-    current: true,
+    current: false,
     logo: codeAlphaLogo,
     color: "#7c6af7",
-    bg: "rgba(124,106,247,0.12)",
+    bg: "rgba(115, 101, 209, 0.12)",
   },
   {
     role: "Media Manager",
@@ -61,7 +72,7 @@ const EXPERIENCES = [
     current: false,
     logo: byteBrigadeLogo,
     color: "#06d6a0",
-    bg: "rgba(6,214,160,0.12)",
+    bg: "rgba(66, 128, 153, 0.12)",
   },
   {
     role: "Full Stack Developer — Intern",
@@ -71,7 +82,7 @@ const EXPERIENCES = [
     current: false,
     logo: maazizLogo,
     color: "#38bdf8",
-    bg: "rgba(56,189,248,0.12)",
+    bg: "rgba(245, 32, 238, 0.12)",
   },
 ];
 
@@ -80,7 +91,7 @@ const PROJECTS = [
     title: "AirSafe AI",
     subtitle: "IoT Air Quality & Respiratory Health Monitoring",
     desc: "Real-time air quality monitoring with ML-powered respiratory crisis prediction. Integrated IoT sensors for PM2.5, PM10, CO2, and O3. Implemented TensorFlow & scikit-learn models for predictive health analytics.",
-    stack: ["Python", "TensorFlow", "Scikit-learn", "IoT"],
+    stack: ["Python", "TensorFlow", "Scikit-learn", "IoT","React.js", "FastAPI", "MongoDB"],
     icon: <Cpu size={18} />,
     github: "https://github.com/fatimaezzahraaelankoud/air-safe-ia",
   },
@@ -96,7 +107,7 @@ const PROJECTS = [
     title: "BIO7",
     subtitle: "E-Commerce for Organic Cosmetics",
     desc: "Full stack e-commerce website with product catalog, shopping cart, and checkout. Spring Boot REST API with JPA and MySQL. Responsive React.js frontend with secure payment processing.",
-    stack: ["Spring Boot", "React.js", "MySQL"],
+    stack: ["Spring Boot","Spring Security","RBAC" , "React.js", "PostgreSQL", "Stripe API"],
     icon: <Layers size={18} />,
     github: "https://github.com/fatimaezzahraaelankoud/bio7-backend",
   },
@@ -104,7 +115,7 @@ const PROJECTS = [
     title: "Hotel Booking System",
     subtitle: "Room Reservation Application",
     desc: "Room reservation and booking management app. REST API for availability, reservations, and bookings. React.js frontend with calendar and availability checking.",
-    stack: ["Spring Boot", "React.js", "MySQL"],
+    stack: ["Spring Boot",'Spring Security',"React.js", "MySQL"],
     icon: <Database size={18} />,
     github: "https://github.com/fatimaezzahraaelankoud/booking_hotel_room",
   },
