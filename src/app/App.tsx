@@ -6,6 +6,10 @@ import maazizLogo from "./logos/maaziz.png";
 import sql from "./logos/sql.jpeg";
 import reactcertificate from "./logos/react.jpeg";
 import ocpLogo from "./logos/ocplogo.png";
+import profilePhoto from "./logos/Portrait.png";
+import reactHackerRankCertificate from "./logos/fronetnd_developer_react_hackerank.png";
+import javaHackerRankCertificate from "./logos/java_basic_hackerank.png";
+import cvPdf from "./public/cv.pdf";
 import {
   Github,
   Linkedin,
@@ -29,6 +33,7 @@ import {
   ImagePlus,
   CheckCircle2,
   Loader2,
+  Download,
 } from "lucide-react";
 
 /* ─── Data ─────────────────────────────────────────── */
@@ -57,7 +62,7 @@ const EXPERIENCES = [
   {
     role: "Web Developer — Virtual Internship",
     company: "CodeAlpha",
-    period: "June 2026 – august 2026",
+    period: "5 June 2026 – 5 August 2026",
     desc: "Developing web applications using modern frameworks and industry best practices.",
     current: false,
     logo: codeAlphaLogo,
@@ -150,6 +155,8 @@ const EDUCATION = [
 const CERTIFICATIONS = [
   { label: "HackerRank — SQL: Basic, Intermediate, Advanced", image: sql },
   { label: "Udemy — React.js: Modern Frontend Development", image: reactcertificate },
+  { label: "HackerRank — Frontend Developer (React)", image: reactHackerRankCertificate },
+  { label: "HackerRank — Java (Basic)", image: javaHackerRankCertificate },
 ];
 
 /* ─── Hooks ─────────────────────────────────────────── */
@@ -304,7 +311,7 @@ function Hero() {
   return (
     <section
       id="About"
-      className="min-h-screen flex flex-col justify-center px-6 pt-24 pb-16 relative overflow-hidden"
+      className="min-h-[100svh] flex flex-col justify-center px-6 pt-16 pb-6 relative overflow-hidden"
     >
       <div
         className="absolute inset-0 opacity-[0.025]"
@@ -318,32 +325,52 @@ function Hero() {
       <div className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] rounded-full bg-accent/8 blur-[80px] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto w-full relative">
-        <div className="grid md:grid-cols-[1fr_auto] gap-12 items-end">
-          <div>
+        <div className="flex justify-center mb-4">
+          <div className="relative w-20 sm:w-24 md:w-28 aspect-square overflow-hidden rounded-full border-2 border-primary/30 bg-card">
+            <div className="absolute inset-0 flex items-center justify-center bg-muted text-4xl font-bold text-primary" style={{ fontFamily: "'Playfair Display', serif" }}>
+              FE
+            </div>
+            <img
+              src={profilePhoto}
+              alt="Fatima-ezzahraa El Ankoud"
+              className="relative w-full h-full rounded-full object-cover"
+              onError={(event) => { event.currentTarget.style.display = "none"; }}
+            />
+          </div>
+        </div>
+
+        <div className="mx-auto max-w-4xl text-center">
             <p
-              className="text-accent text-xs tracking-[0.3em] uppercase mb-6"
+              className="text-accent text-xs tracking-[0.2em] uppercase mb-1"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
-              Full Stack Developer · Computer Engineering Student
+              Final-Year Engineering Student · Seeking PFE Internship
             </p>
             <h1
-              className="text-5xl sm:text-6xl lg:text-8xl font-bold leading-[0.95] tracking-tight mb-8"
+              className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-3"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               Fatima-ezzahraa
-              <br />
-              <span className="text-primary">El ANKOUD</span>
+              <br className="md:hidden" />
+              <span className="text-primary md:ml-2">El ANKOUD</span>
             </h1>
             <p
-              className="text-muted-foreground text-lg max-w-xl leading-relaxed mb-10"
+              className="text-muted-foreground text-base max-w-xl leading-relaxed mb-4 mx-auto"
               style={{ fontFamily: "'Lato', sans-serif" }}
             >
-              Fourth-year Computer Engineering student at ENSA Safi. Building scalable
-              applications from UI/UX design to deployment — specializing in Java (Spring boot), Python(FastAPI), and
-              React.js.
+              Final-year Computer Engineering student at ENSA Safi, looking for a full-stack
+              PFE internship. Focused on React.js, Java, and Spring Boot.
             </p>
 
-            <div className="flex flex-wrap gap-4 mb-12">
+            <div className="flex flex-wrap justify-center gap-2 mb-4">
+              <a
+                href={cvPdf}
+                download="Fatima-Ezzahraa-El-Ankoud-CV.pdf"
+                className="flex items-center gap-2 px-5 py-2.5 bg-primary text-primary-foreground text-sm font-semibold rounded hover:opacity-90 transition-opacity"
+                style={{ fontFamily: "'Lato', sans-serif" }}
+              >
+                <Download size={15} /> Mon CV
+              </a>
               <a
                 href="https://github.com/fatimaezzahraaelankoud"
                 target="_blank"
@@ -372,7 +399,7 @@ function Hero() {
             </div>
 
             <div
-              className="flex flex-wrap gap-6 text-xs text-muted-foreground"
+              className="flex flex-wrap justify-center gap-6 text-xs text-muted-foreground"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
               <span className="flex items-center gap-1.5">
@@ -385,32 +412,11 @@ function Hero() {
                 <Mail size={12} className="text-accent" /> fatimaezzahraaelankoud@gmail.com
               </span>
             </div>
-          </div>
-
-          <div className="hidden md:flex flex-col gap-4 text-right">
-            {[
-              { num: "4+", label: "Years\nof Study" },
-              { num: "5+", label: "Projects\nBuilt" },
-              { num: "3", label: "Internship\nRoles" },
-            ].map((s) => (
-              <div key={s.label} className="border border-border bg-card rounded p-4 min-w-[120px] hover:border-primary/50 transition-colors">
-                <div className="text-3xl font-bold text-primary" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  {s.num}
-                </div>
-                <div
-                  className="text-xs text-muted-foreground mt-1 whitespace-pre-line leading-snug"
-                  style={{ fontFamily: "'Lato', sans-serif" }}
-                >
-                  {s.label}
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
 
         <button
           onClick={() => document.getElementById("Skills")?.scrollIntoView({ behavior: "smooth" })}
-          className="mt-16 flex items-center gap-2 text-xs tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors"
+          className="mt-3 mx-auto flex items-center gap-2 text-xs tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors"
           style={{ fontFamily: "'Lato', sans-serif" }}
         >
           <ChevronDown size={16} className="animate-bounce" /> Scroll to explore
