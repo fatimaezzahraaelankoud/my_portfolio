@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { createContext, useContext, useState, useEffect, useRef } from "react";
 import emailjs from "@emailjs/browser";
 import codeAlphaLogo from "./logos/codealpha.png";
 import byteBrigadeLogo from "./logos/bytebrigade.png";
@@ -35,6 +35,107 @@ import {
   Loader2,
   Download,
 } from "lucide-react";
+
+type Language = "en" | "fr";
+
+const LanguageContext = createContext<{
+  language: Language;
+  setLanguage: (language: Language) => void;
+}>({ language: "en", setLanguage: () => {} });
+
+const FRENCH_TRANSLATIONS: Record<string, string> = {
+  About: "À propos",
+  Skills: "Compétences",
+  Experience: "Expériences",
+  Projects: "Projets",
+  Education: "Formation",
+  Contact: "Contact",
+  "Select language": "Choisir la langue",
+  "Toggle theme": "Changer de thème",
+  "Final-Year Engineering Student · Seeking PFE Internship": "Élève ingénieure en dernière année · À la recherche d’un stage PFE",
+  "Final-year Computer Engineering student at ENSA Safi, looking for a full-stack PFE internship. Focused on React.js, Java, and Spring Boot.": "Élève ingénieure en dernière année en Génie Informatique à l’ENSA Safi, je recherche un stage PFE en développement Full Stack. Je me spécialise en React.js, Java et Spring Boot.",
+  "My CV": "Mon CV",
+  "Scroll to explore": "Défiler pour découvrir",
+  "Technical Expertise": "Compétences techniques",
+  "Backend & APIs": "Backend et API",
+  "Databases": "Bases de données",
+  "DevOps & Tools": "DevOps et outils",
+  "Methodologies": "Méthodologies",
+  "Professional Journey": "Expériences professionnelles",
+  "Full Stack Developer Intern": "Développeuse Full Stack stagiaire",
+  "OCP group - IT department": "OCP Group — Département IT",
+  "6 july 2026 – 4 September 2026": "6 juillet – 4 septembre 2026",
+  "Developed a full-stack internal collaborative platform using React/TypeScript and Spring Boot microservices. Implemented JWT authentication, role-based access control, user/permission management, project management and Kanban task tracking. Integrated REST APIs through Spring Cloud Gateway, with PostgreSQL persistence and Docker/GitHub Actions for containerization and CI/CD React · TypeScript · Java · Spring Boot · Spring Security · JWT · PostgreSQL · Spring Cloud Gateway · Docker · GitHub Actions": "Développement d’une plateforme interne de collaboration avec React/TypeScript et des microservices Spring Boot. Mise en place de l’authentification JWT, du contrôle d’accès par rôles (RBAC), de la gestion des utilisateurs, permissions, projets et tâches Kanban. Intégration des API REST via Spring Cloud Gateway, avec PostgreSQL, Docker et GitHub Actions pour la conteneurisation et la CI/CD.",
+  "Web Developer — Virtual Internship": "Développeuse Web — Stage virtuel",
+  "5 June 2026 – 5 August 2026": "5 juin – 5 août 2026",
+  "Developing web applications using modern frameworks and industry best practices.": "Développement d’applications web avec des frameworks modernes et selon les bonnes pratiques du secteur.",
+  "Media Manager": "Responsable média",
+  "Oct 2025 – June 2026": "Oct. 2025 – juin 2026",
+  "Managed digital content and team coordination. Collaborated on design and collaborative projects.": "Gestion des contenus numériques et coordination de l’équipe. Collaboration sur des projets de design et de communication.",
+  "Full Stack Developer — Intern": "Développeuse Full Stack — Stagiaire",
+  "July – August 2025": "Juillet – août 2025",
+  "Designed and developed a full stack digital newspaper platform (FastAPI + React.js + Ionic). Led a critical database migration from MongoDB to PostgreSQL. Built Figma mockups and managed version control in an Agile team.": "Conception et développement d’une plateforme de journal numérique avec FastAPI, React.js et Ionic. Réalisation d’une migration de MongoDB vers PostgreSQL, de maquettes Figma et gestion du code source en équipe Agile.",
+  "Selected Work": "Projets sélectionnés",
+  "IoT Air Quality & Respiratory Health Monitoring": "Surveillance de la qualité de l’air et de la santé respiratoire par IoT",
+  "Real-time air quality monitoring with ML-powered respiratory crisis prediction. Integrated IoT sensors for PM2.5, PM10, CO2, and O3. Implemented TensorFlow & scikit-learn models for predictive health analytics.": "Surveillance en temps réel de la qualité de l’air et prédiction des crises respiratoires par apprentissage automatique. Intégration de capteurs IoT pour les PM2.5, PM10, CO2 et O3, avec des modèles TensorFlow et scikit-learn pour l’analyse prédictive.",
+  "PFE Opportunity Research Automation": "Automatisation de la recherche d’un stage PFE",
+  "Automated workflow system for internship and PFE opportunity discovery. Built n8n automation workflows for web scraping job boards. Designed a Vue.js dashboard for intuitive opportunity tracking.": "Système automatisé de recherche d’offres de stage et de PFE. Création de workflows n8n pour collecter les offres et d’un tableau de bord Vue.js pour les suivre facilement.",
+  "E-Commerce for Organic Cosmetics": "E-commerce de cosmétiques biologiques",
+  "Full stack e-commerce website with product catalog, shopping cart, and checkout. Spring Boot REST API with JPA and MySQL. Responsive React.js frontend with secure payment processing.": "Site e-commerce avec catalogue, panier et commande. API REST Spring Boot avec JPA et MySQL, interface React.js responsive et traitement sécurisé des paiements.",
+  "Room Reservation Application": "Application de réservation de chambres",
+  "Internship Automation Bot": "Automatisation de la recherche de stages",
+  "Hotel Booking System": "Système de réservation d’hôtel",
+  "REST CRUD API": "API REST CRUD",
+  "Room reservation and booking management app. REST API for availability, reservations, and bookings. React.js frontend with calendar and availability checking.": "Application de réservation et de gestion des chambres. API REST pour les disponibilités et réservations, interface React.js avec calendrier et vérification des disponibilités.",
+  "Student Management System": "Gestion des étudiants",
+  "REST API for complete student management with full CRUD operations. All endpoints validated with Postman — GET, POST, PUT, DELETE.": "API REST de gestion des étudiants avec toutes les opérations CRUD. Endpoints vérifiés avec Postman : GET, POST, PUT et DELETE.",
+  "View on GitHub": "Voir sur GitHub",
+  "Academic Background": "Formation académique",
+  Degrees: "Diplômes",
+  "Engineering Degree — Computer Engineering & AI (GIIA)": "Cycle ingénieur — Génie Informatique et Intelligence Artificielle (GIIA)",
+  "Integrated Preparatory Cycle": "Cycle préparatoire intégré",
+  "Baccalaureate — Mathematics Sciences B, With Honors": "Baccalauréat — Sciences Mathématiques B, mention Bien",
+  "Lycée Technique Al-Khwarizmi, Safi": "Lycée Technique Al-Khwarizmi, Safi",
+  "2024 – Present": "2024 – présent",
+  "2022 – 2024": "2022 – 2024",
+  "2021 – 2022": "2021 – 2022",
+  Languages: "Langues",
+  Arabic: "Arabe",
+  English: "Anglais",
+  French: "Français",
+  Native: "Langue maternelle",
+  Certifications: "Certifications",
+  "HackerRank — SQL: Basic, Intermediate, Advanced": "HackerRank — SQL : niveaux Basic, Intermediate et Advanced",
+  "Udemy — React.js: Modern Frontend Development": "Udemy — React.js : développement frontend moderne",
+  "HackerRank — Frontend Developer (React)": "HackerRank — Développeuse frontend (React)",
+  "HackerRank — Java (Basic)": "HackerRank — Java (niveau Basic)",
+  "Name is required": "Le nom est obligatoire",
+  "Valid email required": "Veuillez saisir une adresse e-mail valide",
+  "Message is required": "Le message est obligatoire",
+  "Failed to send message": "Échec de l’envoi du message",
+  "Let's Build": "Construisons",
+  "Something Together": "quelque chose ensemble",
+  "Open to internship opportunities, full-stack projects, and collaborative engineering work. Feel free to reach out — I reply within 24 hours.": "Ouverte aux stages PFE, aux projets Full Stack et aux collaborations en ingénierie logicielle. Écrivez-moi, je réponds sous 24 heures.",
+  "Safi, Morocco": "Safi, Maroc",
+  "Message Sent!": "Message envoyé !",
+  "Thank you for reaching out. I will get back to you soon.": "Merci pour votre message. Je vous répondrai bientôt.",
+  "Send another message": "Envoyer un autre message",
+  "Full Name": "Nom complet",
+  "Email Address": "Adresse e-mail",
+  "Subject (optional)": "Objet (facultatif)",
+  "Internship opportunity...": "Offre de stage…",
+  Message: "Message",
+  "Hello, I would like to discuss...": "Bonjour, je souhaiterais discuter…",
+  "Sending…": "Envoi en cours…",
+  "Send Message": "Envoyer le message",
+  "© 2026 Fatima-Ezzahraa El Ankoud. All rights reserved.": "© 2026 Fatima-Ezzahraa El Ankoud. Tous droits réservés.",
+  "Full Stack Developer · ENSA Safi · Morocco": "Développement Full Stack · ENSA Safi · Maroc",
+};
+
+function useTranslation() {
+  const { language } = useContext(LanguageContext);
+  return (text: string) => language === "fr" ? FRENCH_TRANSLATIONS[text] ?? text : text;
+}
 
 /* ─── Data ─────────────────────────────────────────── */
 
@@ -182,10 +283,11 @@ function useActiveSection() {
 /* ─── Theme toggle ──────────────────────────────────── */
 
 function ThemeToggle({ dark, toggle }: { dark: boolean; toggle: () => void }) {
+  const t = useTranslation();
   return (
     <button
       onClick={toggle}
-      aria-label="Toggle theme"
+      aria-label={t("Toggle theme")}
       className="p-2 rounded border border-border text-muted-foreground hover:text-foreground hover:border-primary transition-all duration-200"
     >
       {dark ? <Sun size={15} /> : <Moon size={15} />}
@@ -200,6 +302,8 @@ function Navbar({
 }: {
   open: boolean; setOpen: (v: boolean) => void; dark: boolean; toggleDark: () => void;
 }) {
+  const { language, setLanguage } = useContext(LanguageContext);
+  const t = useTranslation();
   const active = useActiveSection();
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
@@ -238,12 +342,25 @@ function Navbar({
               }`}
               style={{ fontFamily: "'Lato', sans-serif" }}
             >
-              {link}
+              {t(link)}
             </button>
           ))}
         </nav>
 
         <div className="flex items-center gap-2 shrink-0">
+          <div className="flex border border-border rounded overflow-hidden" role="group" aria-label={t("Select language")}>
+            {(["en", "fr"] as const).map((option) => (
+              <button
+                key={option}
+                type="button"
+                onClick={() => setLanguage(option)}
+                aria-pressed={language === option}
+                className={`px-2.5 py-1.5 text-[10px] font-semibold uppercase transition-colors ${language === option ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
           <ThemeToggle dark={dark} toggle={toggleDark} />
           <button
             className="md:hidden text-muted-foreground hover:text-foreground transition-colors ml-1"
@@ -264,7 +381,7 @@ function Navbar({
                 className="text-left text-xs tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors"
                 style={{ fontFamily: "'Lato', sans-serif" }}
               >
-                {link}
+                {t(link)}
               </button>
             ))}
           </nav>
@@ -308,6 +425,7 @@ function Section({
 /* ─── Hero ──────────────────────────────────────────── */
 
 function Hero() {
+  const t = useTranslation();
   return (
     <section
       id="About"
@@ -326,7 +444,7 @@ function Hero() {
 
       <div className="max-w-6xl mx-auto w-full relative">
         <div className="flex justify-center mb-4">
-          <div className="relative w-20 sm:w-24 md:w-28 aspect-square overflow-hidden rounded-full border-2 border-primary/30 bg-card">
+          <div className="relative w-24 sm:w-28 md:w-32 aspect-square overflow-hidden rounded-full border-2 border-primary/30 bg-card">
             <div className="absolute inset-0 flex items-center justify-center bg-muted text-4xl font-bold text-primary" style={{ fontFamily: "'Playfair Display', serif" }}>
               FE
             </div>
@@ -344,7 +462,7 @@ function Hero() {
               className="text-accent text-xs tracking-[0.2em] uppercase mb-1"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
-              Final-Year Engineering Student · Seeking PFE Internship
+              {t("Final-Year Engineering Student · Seeking PFE Internship")}
             </p>
             <h1
               className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-3"
@@ -358,8 +476,7 @@ function Hero() {
               className="text-muted-foreground text-base max-w-xl leading-relaxed mb-4 mx-auto"
               style={{ fontFamily: "'Lato', sans-serif" }}
             >
-              Final-year Computer Engineering student at ENSA Safi, looking for a full-stack
-              PFE internship. Focused on React.js, Java, and Spring Boot.
+              {t("Final-year Computer Engineering student at ENSA Safi, looking for a full-stack PFE internship. Focused on React.js, Java, and Spring Boot.")}
             </p>
 
             <div className="flex flex-wrap justify-center gap-2 mb-4">
@@ -369,7 +486,7 @@ function Hero() {
                 className="flex items-center gap-2 px-5 py-2.5 bg-primary text-primary-foreground text-sm font-semibold rounded hover:opacity-90 transition-opacity"
                 style={{ fontFamily: "'Lato', sans-serif" }}
               >
-                <Download size={15} /> Mon CV
+                <Download size={15} /> {t("My CV")}
               </a>
               <a
                 href="https://github.com/fatimaezzahraaelankoud"
@@ -419,7 +536,7 @@ function Hero() {
           className="mt-3 mx-auto flex items-center gap-2 text-xs tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors"
           style={{ fontFamily: "'Lato', sans-serif" }}
         >
-          <ChevronDown size={16} className="animate-bounce" /> Scroll to explore
+          <ChevronDown size={16} className="animate-bounce" /> {t("Scroll to explore")}
         </button>
       </div>
     </section>
@@ -429,8 +546,9 @@ function Hero() {
 /* ─── Skills ────────────────────────────────────────── */
 
 function Skills() {
+  const t = useTranslation();
   return (
-    <Section id="Skills" label="02 / Skills" title="Technical Expertise">
+    <Section id="Skills" label={`02 / ${t("Skills")}`} title={t("Technical Expertise")}>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {Object.entries(SKILLS).map(([category, skills]) => (
           <div
@@ -441,7 +559,7 @@ function Skills() {
               className="text-xs tracking-widest uppercase text-primary mb-4"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
-              {category}
+              {t(category)}
             </h3>
             <div className="flex flex-wrap gap-2">
               {skills.map((skill) => (
@@ -464,8 +582,9 @@ function Skills() {
 /* ─── Experience ────────────────────────────────────── */
 
 function Experience() {
+  const t = useTranslation();
   return (
-    <Section id="Experience" label="03 / Experience" title="Professional Journey">
+    <Section id="Experience" label={`03 / ${t("Experience")}`} title={t("Professional Journey")}>
       <div className="relative">
         <div className="absolute left-6 top-0 bottom-0 w-px bg-border" />
         <div className="flex flex-col gap-0">
@@ -497,10 +616,10 @@ function Experience() {
                     className="text-base font-semibold text-foreground"
                     style={{ fontFamily: "'Playfair Display', serif" }}
                   >
-                    {exp.role}
+                    {t(exp.role)}
                   </h3>
                   <p className="text-primary text-sm" style={{ fontFamily: "'Lato', sans-serif" }}>
-                    {exp.company}
+                    {t(exp.company)}
                   </p>
                 </div>
                 <span
@@ -509,14 +628,14 @@ function Experience() {
                   }`}
                   style={{ fontFamily: "'JetBrains Mono', monospace" }}
                 >
-                  {exp.period}
+                  {t(exp.period)}
                 </span>
               </div>
               <p
                 className="text-muted-foreground text-sm leading-relaxed max-w-2xl"
                 style={{ fontFamily: "'Lato', sans-serif" }}
               >
-                {exp.desc}
+                {t(exp.desc)}
               </p>
             </div>
           ))}
@@ -529,10 +648,11 @@ function Experience() {
 /* ─── Projects ──────────────────────────────────────── */
 
 function Projects() {
+  const t = useTranslation();
   const [hovered, setHovered] = useState<number | null>(null);
 
   return (
-    <Section id="Projects" label="04 / Projects" title="Selected Work">
+    <Section id="Projects" label={`04 / ${t("Projects")}`} title={t("Selected Work")}>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {PROJECTS.map((p, i) => (
           <div
@@ -563,19 +683,19 @@ function Projects() {
               className="font-semibold text-foreground mb-1"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
-              {p.title}
+              {t(p.title)}
             </h3>
             <p
               className="text-xs text-primary mb-3"
               style={{ fontFamily: "'Lato', sans-serif" }}
             >
-              {p.subtitle}
+              {t(p.subtitle)}
             </p>
             <p
               className="text-muted-foreground text-sm leading-relaxed mb-5 flex-1"
               style={{ fontFamily: "'Lato', sans-serif" }}
             >
-              {p.desc}
+              {t(p.desc)}
             </p>
 
             <div className="flex flex-wrap gap-1.5 mb-5">
@@ -598,7 +718,7 @@ function Projects() {
               className="flex items-center justify-center gap-2 py-2 border border-border rounded text-xs font-medium text-muted-foreground hover:border-primary hover:text-primary transition-colors"
               style={{ fontFamily: "'Lato', sans-serif" }}
             >
-              <Github size={14} /> View on GitHub <ArrowUpRight size={13} />
+              <Github size={14} /> {t("View on GitHub")} <ArrowUpRight size={13} />
             </a>
           </div>
         ))}
@@ -614,10 +734,10 @@ function Projects() {
 /* ─── Education ─────────────────────────────────────── */
 
 function Education() {
-  
+  const t = useTranslation();
 
   return (
-    <Section id="Education" label="05 / Education" title="Academic Background">
+    <Section id="Education" label={`05 / ${t("Education")}`} title={t("Academic Background")}>
       <div className="grid lg:grid-cols-2 gap-8">
         {/* Degrees */}
         <div>
@@ -625,7 +745,7 @@ function Education() {
             className="text-xs tracking-widest uppercase text-muted-foreground mb-6"
             style={{ fontFamily: "'JetBrains Mono', monospace" }}
           >
-            Degrees
+            {t("Degrees")}
           </h3>
           <div className="flex flex-col gap-4">
             {EDUCATION.map((e, i) => (
@@ -638,17 +758,17 @@ function Education() {
                     className="font-medium text-foreground text-sm leading-snug"
                     style={{ fontFamily: "'Playfair Display', serif" }}
                   >
-                    {e.degree}
+                    {t(e.degree)}
                   </h4>
                   <span
                     className="text-xs text-muted-foreground whitespace-nowrap shrink-0"
                     style={{ fontFamily: "'JetBrains Mono', monospace" }}
                   >
-                    {e.period}
+                    {t(e.period)}
                   </span>
                 </div>
                 <p className="text-primary text-xs" style={{ fontFamily: "'Lato', sans-serif" }}>
-                  {e.school}
+                  {t(e.school)}
                 </p>
               </div>
             ))}
@@ -659,7 +779,7 @@ function Education() {
             className="text-xs tracking-widest uppercase text-muted-foreground mb-6 mt-10"
             style={{ fontFamily: "'JetBrains Mono', monospace" }}
           >
-            Languages
+            {t("Languages")}
           </h3>
           <div className="grid grid-cols-3 gap-3">
             {[
@@ -669,10 +789,10 @@ function Education() {
             ].map((l) => (
               <div key={l.lang} className="bg-card border border-border rounded p-4 text-center hover:border-primary/40 transition-colors">
                 <div className="text-lg font-bold text-foreground mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  {l.level}
+                  {t(l.level)}
                 </div>
                 <div className="text-xs text-muted-foreground mb-3" style={{ fontFamily: "'Lato', sans-serif" }}>
-                  {l.lang}
+                  {t(l.lang)}
                 </div>
                 <div className="h-0.5 bg-muted rounded-full overflow-hidden">
                   <div className="h-full bg-primary rounded-full" style={{ width: `${l.pct}%` }} />
@@ -688,7 +808,7 @@ function Education() {
             className="text-xs tracking-widest uppercase text-muted-foreground mb-6"
             style={{ fontFamily: "'JetBrains Mono', monospace" }}
           >
-            Certifications
+            {t("Certifications")}
           </h3>
           <div className="flex flex-col gap-4">
             {CERTIFICATIONS.map((c, i) => (
@@ -698,7 +818,7 @@ function Education() {
   >
     <img
       src={c.image}
-      alt={c.label}
+      alt={t(c.label)}
       className="w-full h-48 object-contain rounded mb-4"
     />
 
@@ -706,7 +826,7 @@ function Education() {
       className="text-sm font-medium text-foreground"
       style={{ fontFamily: "'Playfair Display', serif" }}
     >
-      {c.label}
+      {t(c.label)}
     </h4>
   </div>
 ))}
@@ -720,15 +840,16 @@ function Education() {
 /* ─── Contact form ──────────────────────────────────── */
 
 function Contact() {
+  const t = useTranslation();
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const validate = () => {
     const e: Record<string, string> = {};
-    if (!form.name.trim()) e.name = "Name is required";
-    if (!form.email.trim() || !/\S+@\S+\.\S+/.test(form.email)) e.email = "Valid email required";
-    if (!form.message.trim()) e.message = "Message is required";
+    if (!form.name.trim()) e.name = t("Name is required");
+    if (!form.email.trim() || !/\S+@\S+\.\S+/.test(form.email)) e.email = t("Valid email required");
+    if (!form.message.trim()) e.message = t("Message is required");
     return e;
   };
 
@@ -770,7 +891,7 @@ function Contact() {
   } catch (error) {
     console.error("Email error:", error);
     setStatus("idle");
-    alert("Failed to send message");
+    alert(t("Failed to send message"));
   }
 };
 
@@ -786,14 +907,14 @@ function Contact() {
         className="block text-xs tracking-widest uppercase text-muted-foreground mb-2"
         style={{ fontFamily: "'JetBrains Mono', monospace" }}
       >
-        {label}
+        {t(label)}
       </label>
       <input
         id={id}
         type={type}
         value={form[id]}
         onChange={(e) => setForm((f) => ({ ...f, [id]: e.target.value }))}
-        placeholder={placeholder}
+        placeholder={t(placeholder)}
         className={`w-full bg-card border rounded px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none transition-colors focus:border-primary ${
           errors[id] ? "border-destructive" : "border-border"
         }`}
@@ -815,7 +936,7 @@ function Contact() {
             className="text-accent text-xs tracking-[0.3em] uppercase shrink-0"
             style={{ fontFamily: "'JetBrains Mono', monospace" }}
           >
-            06 / Contact
+            06 / {t("Contact")}
           </span>
           <div className="flex-1 h-px bg-border" />
         </div>
@@ -827,16 +948,15 @@ function Contact() {
               className="text-3xl sm:text-4xl font-bold mb-6 tracking-tight"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
-              {"Let's Build"}
+              {t("Let's Build")}
               <br />
-              <span className="text-primary">Something Together</span>
+              <span className="text-primary">{t("Something Together")}</span>
             </h2>
             <p
               className="text-muted-foreground text-base leading-relaxed mb-10"
               style={{ fontFamily: "'Lato', sans-serif" }}
             >
-              Open to internship opportunities, full-stack projects, and collaborative
-              engineering work. Feel free to reach out — I reply within 24 hours.
+              {t("Open to internship opportunities, full-stack projects, and collaborative engineering work. Feel free to reach out — I reply within 24 hours.")}
             </p>
 
             <div className="flex flex-col gap-4 mb-10">
@@ -885,20 +1005,20 @@ function Contact() {
                   className="text-xl font-bold text-foreground"
                   style={{ fontFamily: "'Playfair Display', serif" }}
                 >
-                  Message Sent!
+                  {t("Message Sent!")}
                 </h3>
                 <p
                   className="text-muted-foreground text-sm"
                   style={{ fontFamily: "'Lato', sans-serif" }}
                 >
-                  Thank you for reaching out. I will get back to you soon.
+                  {t("Thank you for reaching out. I will get back to you soon.")}
                 </p>
                 <button
                   onClick={() => setStatus("idle")}
                   className="mt-2 text-xs text-primary underline underline-offset-4"
                   style={{ fontFamily: "'Lato', sans-serif" }}
                 >
-                  Send another message
+                  {t("Send another message")}
                 </button>
               </div>
             ) : (
@@ -914,14 +1034,14 @@ function Contact() {
                     className="block text-xs tracking-widest uppercase text-muted-foreground mb-2"
                     style={{ fontFamily: "'JetBrains Mono', monospace" }}
                   >
-                    Message
+                    {t("Message")}
                   </label>
                   <textarea
                     id="message"
                     rows={5}
                     value={form.message}
                     onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
-                    placeholder="Hello, I would like to discuss..."
+                    placeholder={t("Hello, I would like to discuss...")}
                     className={`w-full bg-background border rounded px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none transition-colors focus:border-primary resize-none ${
                       errors.message ? "border-destructive" : "border-border"
                     }`}
@@ -940,9 +1060,9 @@ function Contact() {
                   style={{ fontFamily: "'Lato', sans-serif" }}
                 >
                   {status === "sending" ? (
-                    <><Loader2 size={15} className="animate-spin" /> Sending…</>
+                    <><Loader2 size={15} className="animate-spin" /> {t("Sending…")}</>
                   ) : (
-                    <><Send size={15} /> Send Message</>
+                    <><Send size={15} /> {t("Send Message")}</>
                   )}
                 </button>
               </form>
@@ -957,6 +1077,7 @@ function Contact() {
 /* ─── Footer ────────────────────────────────────────── */
 
 function Footer() {
+  const t = useTranslation();
   return (
     <footer className="border-t border-border py-8 px-6">
       <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -964,13 +1085,13 @@ function Footer() {
           className="text-xs text-muted-foreground"
           style={{ fontFamily: "'Lato', sans-serif" }}
         >
-          © 2026 Fatima-Ezzahraa El Ankoud. All rights reserved.
+          {t("© 2026 Fatima-Ezzahraa El Ankoud. All rights reserved.")}
         </span>
         <span
           className="text-xs text-muted-foreground/50"
           style={{ fontFamily: "'JetBrains Mono', monospace" }}
         >
-          Full Stack Developer · ENSA Safi · Morocco
+          {t("Full Stack Developer · ENSA Safi · Morocco")}
         </span>
       </div>
     </footer>
@@ -982,6 +1103,7 @@ function Footer() {
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dark, setDark] = useState(true);
+  const [language, setLanguage] = useState<Language>("en");
 
   useEffect(() => {
     if (dark) {
@@ -991,7 +1113,15 @@ export default function App() {
     }
   }, [dark]);
 
+  useEffect(() => {
+    document.documentElement.lang = language;
+    document.title = language === "fr"
+      ? "Portfolio de Fatima-Ezzahraa El Ankoud"
+      : "Fatima-Ezzahraa El Ankoud Portfolio";
+  }, [language]);
+
   return (
+    <LanguageContext.Provider value={{ language, setLanguage }}>
     <div className="min-h-screen bg-background text-foreground">
       <style>{`
         html { scroll-behavior: smooth; }
@@ -1016,5 +1146,6 @@ export default function App() {
       </main>
       <Footer />
     </div>
+    </LanguageContext.Provider>
   );
 }
